@@ -3,28 +3,21 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 
-export default function Register() {
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Add loading state
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false); // Add loading state
   const router = useRouter();
 
-  const handleRegister = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      setLoading(false);
-      return;
-    }
+    setLoading(true); // Start loading
 
     try {
       const response = await fetch('/api/user', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -32,29 +25,29 @@ export default function Register() {
       });
 
       const data = await response.json();
-      console.log('Response Data:', data);
 
       if (!response.ok) {
-        throw new Error(data.error || 'Registration failed.');
+        throw new Error(data.error);
       }
 
-      setSuccess('Registration successful! Redirecting to login...');
-      setTimeout(() => {
-        router.push('/login');
-      }, 2000);
+      // Store the token (you might want to use localStorage or cookies)
+      localStorage.setItem('token', data.token);
+
+      setSuccess('Login successful! Redirecting to the cate page...');
+      setTimeout(() => router.push('/cate'), 2000); // Redirect to /cate
      
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setLoading(false); // End loading
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Register</h1>
-        <form onSubmit={handleRegister} className="space-y-4">
+        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        <form onSubmit={handleLogin} className="space-y-4">
           <div className="flex flex-col">
             <label htmlFor="username" className="mb-2 text-sm font-medium text-gray-700">Username</label>
             <input
@@ -63,8 +56,7 @@ export default function Register() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="p-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your username"
+              className="p-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex flex-col">
@@ -75,20 +67,7 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="p-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your password"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="confirmPassword" className="mb-2 text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              className="p-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Confirm your password"
+              className="p-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <button
@@ -96,13 +75,9 @@ export default function Register() {
             disabled={loading}
             className={`w-full py-3 px-4 rounded-lg text-white ${loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-300`}
           >
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="text-center mt-4">
-          Already have an account?{' '}
-          <a href="/login" className="text-blue-500 hover:underline">Login</a>
-        </p>
         {loading && <p className="text-center text-blue-500 mt-4">Loading...</p>} {/* Show loading indicator */}
         {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
         {success && <p className="text-green-500 mt-4 text-center">{success}</p>}
