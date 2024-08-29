@@ -51,8 +51,16 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-900">
+      <div className="text-7xl flex    text-gray-100 mt-10 mb-10 font-thin dssd">
+        <div> welcome to the mcc extra databasr</div> 
+        <div>
+       
+        </div>
+      </div>
+      
+      <div className="w-full max-w-md p-8 bg-gray-200 shadow-md rounded-lg">
+        {/* <div className="text-7xl text-black" >welcome to the MCC acticity databa</div> */}
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Register</h1>
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="flex flex-col">

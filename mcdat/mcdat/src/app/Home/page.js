@@ -135,7 +135,9 @@ const Home = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      
       <div className="w-full max-w-lg mx-auto p-4 bg-white backdrop-blur-sm bg-opacity-20 border border-white shadow-lg rounded glass">
+        <div className='  text-white'>add data and edit and delete</div>
         {/* Form for Adding New Item */}
         <form
           onSubmit={async (e) => {

@@ -45,7 +45,9 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
+      <div className="text-black text-7xl mt-10 mb-10 font-thin">login to the database</div>
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+        <div>Login to the database</div>
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="flex flex-col">
